@@ -11,12 +11,18 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { useRouter } from "next/navigation";
 
 export default function Shop() {
+  const router = useRouter();
   const { data: products, isLoading: productsLoading } = useQuery(
     "products",
     getProducts
   );
+
+  const handleDetails = (productId: string) => {
+    router.push(`/dashboard/shop/${productId}`);
+  };
 
   if (productsLoading)
     return (
@@ -38,7 +44,7 @@ export default function Shop() {
       <h1 className="p-2 font-bold"> Products</h1>
       <div className="flex flex-row flex-wrap items-center gap-2 p-2">
         {products.map((product: any) => (
-          <Card>
+          <Card key={product._id}>
             <CardHeader>
               <div className="w-40 h-32">
                 <img src={product.image} />
@@ -47,7 +53,9 @@ export default function Shop() {
               <CardDescription>product.description</CardDescription>
             </CardHeader>
             <CardContent>
-              <Button>View details</Button>
+              <Button onClick={() => handleDetails(product._id)}>
+                View details
+              </Button>
             </CardContent>
           </Card>
         ))}

@@ -34,8 +34,7 @@ import {
 import { Hourglass } from "react-loader-spinner";
 import { Button } from "@/components/ui/button";
 import { useRouter, usePathname } from "next/navigation";
-
-export const UserContext = createContext<any>(undefined);
+import { UserContext } from "@/context/UserContext";
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
   "& .MuiBadge-badge": {
@@ -78,12 +77,12 @@ interface ListItems {
 }
 
 interface Dashboard {
-  user: ListItems[];
+  customer: ListItems[];
   admin: ListItems[];
 }
 
 const menuItems: Dashboard = {
-  user: [
+  customer: [
     { icon: CiHome, text: "Home", link: "/dashboard" },
     { icon: CiPen, text: "Shop", link: "/dashboard/shop" },
     { icon: CiUser, text: "Profile", link: "/dashboard/profile" },
@@ -91,9 +90,19 @@ const menuItems: Dashboard = {
   ],
   admin: [
     { icon: CiHome, text: "Home", link: "/dashboard" },
+    { icon: CiPen, text: "Add Products", link: "/dashboard/addproducts" },
+    {
+      icon: CiVoicemail,
+      text: "Manage Products",
+      link: "/dashboard/manageproducts",
+    },
     { icon: PiUsers, text: "Manage Users", link: "/dashboard/manageusers" },
     { icon: CiUser, text: "Profile", link: "/dashboard/profile" },
-    { icon: PiDatabase, text: "Statistics", link: "/dashboard/statistics" },
+    {
+      icon: PiDatabase,
+      text: "Manage Orders",
+      link: "/dashboard/manageorders",
+    },
   ],
 };
 
@@ -117,7 +126,7 @@ export default function DashboardLayout({
           ariaLabel="hourglass-loading"
           wrapperStyle={{}}
           wrapperClass=""
-          colors={["#18bbec", "#5dcff2"]}
+          colors={["#000000", "#000000"]}
         />
       </div>
     );
@@ -130,10 +139,10 @@ export default function DashboardLayout({
 
   //get active route then check if it a path allowed for the user
   //if not redirect to dashboard
-  if (user !== null) {
+  if (user !== undefined) {
     let allowedRoutes: string[] = [];
 
-    if (user.role === "user") {
+    if (user.role === "customer") {
       allowedRoutes = [
         "/dashboard/shop",
         "/dashboard/profile",
@@ -142,8 +151,11 @@ export default function DashboardLayout({
     } else if (user.role === "admin") {
       allowedRoutes = [
         "/dashboard/manageusers",
+        "/dashboard/manageorders",
         "/dashboard/profile",
-        "/dashboard/statistics",
+        "/dashboard/manageproducts",
+        "/dashboard/addproduct",
+        "/dashboard/orders",
       ];
     } else {
       allowedRoutes = [
@@ -153,6 +165,8 @@ export default function DashboardLayout({
         "/dashboard/manageusers",
         "/dashboard/profile",
         "/dashboard/statistics",
+        "/dashboard/manageproducts",
+        "/dashboard/addproduct",
       ];
     }
 
@@ -165,7 +179,7 @@ export default function DashboardLayout({
     }
   }
 
-  if (user !== null) {
+  if (user) {
     return (
       <UserContext.Provider value={user}>
         <div className="h-screen  border-0 flex items-center justify-center">

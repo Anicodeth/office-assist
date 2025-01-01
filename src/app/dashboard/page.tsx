@@ -1,3 +1,4 @@
+"use client";
 import Image from "next/image";
 import manHappy from "../../assets/happyman.png";
 import {
@@ -9,8 +10,16 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 
 export default function Dashboard() {
+  const router = useRouter();
+  const user = JSON.parse(sessionStorage.getItem("user") as string) as User;
+
+  const handleShop = () => {
+    if (user.role == "customer") router.push("/dashboard/shop");
+    else router.push("/dashboard/manageusers");
+  };
   return (
     <>
       <div className="flex items-center justify-center h-screen">
@@ -24,11 +33,15 @@ export default function Dashboard() {
               <CardHeader>
                 <CardTitle>Office Assist</CardTitle>
                 <CardDescription>
-                  Shop for your office for high quality items!
+                  {user.role == "customer"
+                    ? "Shop for your office for high quality items!"
+                    : "Manage users and products!"}
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <Button>Shop</Button>
+                <Button onClick={handleShop}>
+                  {user.role == "customer" ? "Shop" : "Manage"}
+                </Button>
               </CardContent>
               <CardFooter>
                 <p>Just a click away!</p>

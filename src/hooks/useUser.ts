@@ -1,12 +1,17 @@
 import { root } from "postcss";
 import { useState, useEffect } from "react";
 
-interface User {
-  role: string;
+export interface User {
+  _id: string;
+  name: string;
+  email: string;
+  orders: string[];
+  coins: number;
+  role: "customer" | "admin";
 }
 
 export function useUser() {
-  const [user, setUser] = useState<User | null>({role:"user"});
+  const [user, setUser] = useState<User>();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
