@@ -39,7 +39,7 @@ export default function Profile() {
         </div>
 
         <div>
-          <h2 className="text-3xl font-semibold text-gray-800 mb-4">Orders</h2>
+          <h2 className="text-3xl font-semibold text-gray-800 mb-4">Cart</h2>
           {ordersLoading ? (
             <div className="text-center text-gray-500">Loading...</div>
           ) : (

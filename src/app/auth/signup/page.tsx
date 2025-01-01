@@ -22,6 +22,21 @@ export default function SignUp() {
   });
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    //check if password and confirm password are the same
+    const password = (
+      e.currentTarget.querySelector(
+        'input[name="password"]'
+      ) as HTMLInputElement
+    ).value;
+    const confirmPassword = (
+      e.currentTarget.querySelector(
+        'input[name="confirmpassword"]'
+      ) as HTMLInputElement
+    ).value;
+    if (password !== confirmPassword) {
+      toast("Password do not match");
+      return;
+    }
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const data = {
