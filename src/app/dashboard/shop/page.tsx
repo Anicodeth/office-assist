@@ -47,7 +47,7 @@ export default function Shop() {
           <Card key={product._id}>
             <CardHeader>
               <div className="w-40 h-32">
-                <img src={product.image} />
+                <img className="w-40 h-32" src={product.image} />
               </div>
               <CardTitle>{product.title}</CardTitle>
               <CardDescription>product.description</CardDescription>
